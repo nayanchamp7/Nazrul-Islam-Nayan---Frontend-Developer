@@ -57,6 +57,9 @@ class SPX_Loader
     {
         // init
         add_action('init', [$this, 'init']);
+
+        // block scripts
+        add_action('enqueue_block_editor_assets', [$this, 'spx_block_scripts']);
     }
 
     // plugin init
@@ -99,5 +102,57 @@ class SPX_Loader
     function include_path($file = '')
     {
         return untrailingslashit(plugin_dir_path(SPX_PLUGIN_FILE) . 'includes') . $file;
+    }
+
+    // enqueue scripts
+    function spx_block_scripts()
+    {
+
+        // default dependencies
+        $script_dependencies = array(
+            'dependencies' => null,
+            'version' => null,
+        );
+
+        // include dependencies file
+        if ( file_exists($this->plugin_path() . '/build/index.asset.php') ) {
+            $script_dependencies = require $this->plugin_path() . '/build/index.asset.php';
+        }
+
+        // block css
+        wp_enqueue_style(
+            'spx-blocks-style',
+            $this->plugin_url() . '/build/style-index.css',
+            array('wp-edit-blocks'),
+            time()
+        );
+
+        // script file
+        wp_register_script(
+            'spx-block-script',
+            $this->plugin_url() . '/build/index.js',
+            $script_dependencies['dependencies'],
+            $script_dependencies['version'],
+            true // Enqueue in the footer.
+        );
+
+        // localize script
+        wp_localize_script(
+            'spx-block-script',
+            'spx_script_obj',
+            array(
+                'homeurl' => home_url(),
+                'ajaxurl' => admin_url('admin-ajax.php'),
+                'plugin_url' => $this->plugin_url(),
+            )
+        );
+
+        // register block
+        register_block_type(
+            $this->plugin_path(),
+            array(
+                'editor_script' => 'spx-block-script'
+            )
+        );
     }
 }
