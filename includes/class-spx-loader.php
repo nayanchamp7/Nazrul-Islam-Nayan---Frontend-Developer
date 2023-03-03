@@ -47,6 +47,8 @@ class SPX_Loader
     // includes files
     function includes()
     {
+        // api file including
+        include dirname(__FILE__) . '/class-spx-api.php';
 
     }
 
@@ -60,11 +62,13 @@ class SPX_Loader
     // plugin init
     function init()
     {
+        //api class initialize
+        new SPX_API();
     }
 
     public function language()
     {
-        load_plugin_textdomain('spacex-rocket', false, plugin_basename(dirname(SPX_PLUGIN_FILE)) . '/languages');
+        load_plugin_textdomain('spacex-craft', false, plugin_basename(dirname(SPX_PLUGIN_FILE)) . '/languages');
     }
 
     public function basename()

@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       SpaceX Rocket
- * Description:       A simple gutenberg block plugin to show spacex rockets.
+ * Plugin Name:       SpaceX Craft
+ * Description:       A simple gutenberg block plugin to show spacex craft.
  * Requires at least: 5.8
  * Requires PHP:      7.0
  * Version:           1.0.0
@@ -9,7 +9,7 @@
  * Author URI:        https://profiles.wordpress.org/nayanchamp7/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       spacex-rocket
+ * Text Domain:       spacex-craft
  *
  * @package           SpaceX
  */
