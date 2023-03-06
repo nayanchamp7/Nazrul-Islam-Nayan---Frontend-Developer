@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * SpaceX Main Class
  *
@@ -15,6 +13,16 @@ defined('ABSPATH') || exit;
 
 class SPX_Loader
 {
+    /**
+     * SpaceX Main Class
+     *
+     * @category Class
+     * @package  SPX_Loader
+     * @author   Nazrul Islam Nayan <nazrulislamnayan7@gmail.com>
+     * @license  https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
+     * @link     https://github.com/nayanchamp7/Nazrul-Islam-Nayan---Frontend-Developer.git
+     */
+
     protected static $_instance = null;
 
     /**
@@ -40,13 +48,13 @@ class SPX_Loader
     /**
      * Define constance
      *
-     * @param $name
-     * @param $value
+     * @param  $name
+     * @param  $value
      * @return void
      */
     protected function define($name, $value)
     {
-        if (!defined($name)) {
+        if ( !defined($name) ) {
             define($name, $value);
         }
     }
@@ -58,7 +66,7 @@ class SPX_Loader
      */
     static function instance()
     {
-        if (is_null(self::$_instance)) {
+        if ( is_null(self::$_instance) ) {
             self::$_instance = new self();
         }
 
@@ -169,7 +177,7 @@ class SPX_Loader
     /**
      * Include folder path
      *
-     * @param $file string file path
+     * @param  $file string file path
      * @return string
      */
     function include_path($file = '')

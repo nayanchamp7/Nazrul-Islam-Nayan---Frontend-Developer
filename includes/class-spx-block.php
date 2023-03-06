@@ -106,7 +106,7 @@ class SPX_Block
         );
 
         // include dependencies file
-        if (file_exists($this->loader_obj->plugin_path() . '/build/index.asset.php') ) {
+        if ( file_exists($this->loader_obj->plugin_path() . '/build/index.asset.php') ) {
             $script_dependencies = include $this->loader_obj->plugin_path() . '/build/index.asset.php';
         }
 
@@ -154,8 +154,8 @@ class SPX_Block
     /**
      * Rendering the block
      *
-     * @param $attributes array block attributes
-     * @param $content mixed block content
+     * @param  $attributes array block attributes
+     * @param  $content    mixed block content
      * @return false|string
      */
     function render_block($attributes, $content)
@@ -179,7 +179,7 @@ class SPX_Block
     /**
      * Filter the body class
      *
-     * @param $classes array body classes
+     * @param  $classes array body classes
      * @return mixed
      */
     function filter_body_class( $classes )
@@ -187,7 +187,7 @@ class SPX_Block
         global $post;
 
         if ( has_block('spacex/craft', $post) ) {
-            if(! is_user_logged_in() ) {
+            if( !is_user_logged_in() ) {
                 $classes[] = 'login';
             }
         }

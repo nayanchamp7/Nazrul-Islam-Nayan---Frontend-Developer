@@ -1,3 +1,14 @@
+<?php
+/**
+ * SpaceX block content for frontend
+ *
+ * @category Template
+ * @package  SPX_Loader
+ * @author   Nazrul Islam Nayan <nazrulislamnayan7@gmail.com>
+ * @license  https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
+ * @link     https://github.com/nayanchamp7/Nazrul-Islam-Nayan---Frontend-Developer.git
+ */
+?>
 <div class="spx-grid-wrapper">
 
     <!-- popup content -->

@@ -12,7 +12,7 @@
 
 defined('ABSPATH') || exit;
 
-if (! class_exists('SPX_API') ) {
+if ( ! class_exists('SPX_API') ) {
     /**
      * SpaceX API class
      *
@@ -44,7 +44,7 @@ if (! class_exists('SPX_API') ) {
          */
         public static function instance()
         {
-            if (is_null(self::$instance) ) {
+            if ( is_null(self::$instance) ) {
                 self::$instance = new self();
             }
 
@@ -138,8 +138,8 @@ if (! class_exists('SPX_API') ) {
                     "type",
                 ];
 
-                if( isset($filter_by) && $filter_value ) {
-                    if ( in_array($filter_by, $available_filters) ) {
+                if(isset($filter_by) && $filter_value ) {
+                    if (in_array($filter_by, $available_filters) ) {
                         $body_args['query'][$filter_by] = $filter_value;
                     }
                 }
@@ -161,7 +161,7 @@ if (! class_exists('SPX_API') ) {
             $response = wp_remote_post($api_url, $args);
 
             // set api body response and messages
-            if (! is_wp_error($response) ) {
+            if ( ! is_wp_error($response) ) {
                 $responseBody = json_decode(wp_remote_retrieve_body($response), true);
             } else {
                 $error_message = $response->get_error_message();

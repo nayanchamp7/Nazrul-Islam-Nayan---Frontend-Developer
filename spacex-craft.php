@@ -11,7 +11,11 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       spacex-craft
  *
- * @package SpaceX
+ * @category Base
+ * @package  SpaceX
+ * @author   Nazrul Islam Nayan <nazrulislamnayan7@gmail.com>
+ * @license  https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
+ * @link     https://github.com/nayanchamp7/Nazrul-Islam-Nayan---Frontend-Developer.git
  */
 
 
@@ -32,10 +36,12 @@ if (! class_exists('SPX_Loader', false) ) {
 
 /**
  * Returns the main instance.
+ *
+ * @return object instance of the base file
  */
-function spx_loader_callback()  // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
+function spx_loader_callback()  // phpcs:ignore
 {
     return SPX_Loader::instance();
 }
 
-add_action('plugins_loaded', 'spx_loader_callback');
+add_action('plugins_loaded', 'spx_loader_callback'); // phpcs:ignore
