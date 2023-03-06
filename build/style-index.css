@@ -1,3 +1,6 @@
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/style.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************/
 * {
   box-sizing: border-box;
 }
@@ -5,6 +8,10 @@
 body {
   margin: 0;
   padding: 0;
+}
+
+img {
+  width: 100%;
 }
 
 .spx-hide {
@@ -28,6 +35,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 9999;
 }
 .spx-grid-wrapper .spx-grid-popup-wrapper .spx-grid-popup-container {
   width: 100%;
@@ -56,13 +64,21 @@ body {
   line-height: 1;
   cursor: pointer;
 }
+.spx-grid-wrapper .spx-grid-popup-wrapper .spx-grid-popup-container .spx-grid-popup-box img {
+  width: 150px;
+}
 .spx-grid-wrapper .spx-grid-container .spx-grid-header {
   text-align: center;
+}
+.spx-grid-wrapper .spx-grid-container .spx-grid-header h2 {
+  margin-bottom: 0;
+  font-size: 34px;
 }
 .spx-grid-wrapper .spx-grid-container .spx-grid-searchbox {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 30px;
 }
 .spx-grid-wrapper .spx-grid-container .spx-grid-searchbox .spx-grid-searchbox-filter-wrap {
   background: #fff;
@@ -90,14 +106,24 @@ body {
 }
 .spx-grid-wrapper .spx-grid-container .spx-grid-searchbox .spx-grid-searchbox-filter-wrap label select {
   outline: none;
-  padding: 5px;
+  padding: 15px 22px;
   border: none;
+  border-radius: inherit;
+  font-size: 14px;
 }
-.spx-grid-wrapper .spx-grid-container .spx-grid-searchbox .spx-grid-searchbox-filter-wrap label input[type=search] {
+.spx-grid-wrapper .spx-grid-container .spx-grid-searchbox .spx-grid-searchbox-filter-wrap label input[type=text] {
   border-left: 0;
   outline: none;
   border: none;
-  padding: 5px 10px;
+  padding: 10px;
+  border-radius: inherit;
+}
+.spx-grid-wrapper .spx-grid-container .spx-grid-searchbox input[type=submit] {
+  padding: 10px 15px;
+  margin-left: 8px;
+  background: purple;
+  border: none;
+  color: #fff;
 }
 .spx-grid-wrapper .spx-grid-container .spx-grid-items {
   display: flex;
@@ -105,6 +131,13 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-top: 40px;
+}
+.spx-grid-wrapper .spx-grid-container .spx-grid-items .spx-item-message {
+  text-align: center;
+  color: #f53939;
+  font-size: 18px;
+  margin: auto;
+  margin-bottom: 40px;
 }
 .spx-grid-wrapper .spx-grid-container .spx-grid-items .spx-grid-item {
   display: flex;
@@ -116,6 +149,12 @@ body {
   background: #fff;
   padding: 20px;
   margin-bottom: 25px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  transform: scale(1);
+}
+.spx-grid-wrapper .spx-grid-container .spx-grid-items .spx-grid-item:hover {
+  transform: scale(1.05);
 }
 .spx-grid-wrapper .spx-grid-container .spx-grid-pagination-wrapper .spx-grid-pagination-buttons {
   display: flex;
@@ -134,3 +173,22 @@ body {
   background: purple;
   color: #fff;
 }
+
+@media screen and (max-width: 500px) {
+  .spx-grid-wrapper .spx-grid-container .spx-grid-header h2 {
+    font-size: 28px;
+  }
+  .spx-grid-wrapper .spx-grid-container .spx-grid-searchbox .spx-grid-searchbox-filter-wrap label select {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  .spx-grid-wrapper .spx-grid-container .spx-grid-searchbox .spx-grid-searchbox-filter-wrap label input[type=text] {
+    padding: 5px 10px;
+  }
+  .spx-grid-wrapper .spx-grid-container .spx-grid-searchbox input[type=submit] {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+}
+
+/*# sourceMappingURL=style-index.css.map*/
