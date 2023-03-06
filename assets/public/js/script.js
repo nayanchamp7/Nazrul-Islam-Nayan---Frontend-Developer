@@ -64,18 +64,20 @@ let { __ } = wp.i18n;
             let gridItem = document.createElement('div');
             gridItem.classList.add('spx-grid-item');
 
-            // create image dom
-            let itemImage = document.createElement('img');
+            if( item.launch.links ) {
+                // create image dom
+                let itemImage = document.createElement('img');
                 itemImage.setAttribute('src', item.launch.links.patch.small);
+
+                //append item image
+                gridItem.appendChild(itemImage);
+            }
 
             // create input hidden dom to store the item data
             let input = document.createElement('input');
                 input.setAttribute('type', 'hidden');
                 input.classList.add('spx-grid-item-data');
                 input.value = JSON.stringify(item);
-
-                //append item image
-                gridItem.appendChild(itemImage);
 
                 //append input hidden item data
                 gridItem.appendChild(input);
@@ -137,6 +139,7 @@ let { __ } = wp.i18n;
                 let pageDiff = data.totalPages - data.page;
 
                 if( pageDiff > 0 ) {
+                    console.log(data.page + ' - diff: ' + pageDiff);
                     for( let i = data.page; i < data.page + 3; i++ ) {
 
                         // don't create paginate button if current page number is greater the total page number, stop at the final page
@@ -216,6 +219,15 @@ let { __ } = wp.i18n;
                             // get launch data of current capsule
                             let launchResponse = await SpaceX.singleFetch(args);
 
+                            // when empty response, skip it
+                            if( !launchResponse ) {
+                                return false;
+
+                                if( launchResponse.links === null ) {
+                                    return false;
+                                }
+                            }
+                            
                             let data = {
                                 capsule: item,
                                 launch: launchResponse
