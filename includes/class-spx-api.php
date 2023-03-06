@@ -3,53 +3,110 @@
 /**
  * SPX API
  *
- * @package    SPX_API
+ * @category Class
+ * @package  SPX_API
+ * @author   Nazrul Islam Nayan <nazrulislamnayan7@gmail.com>
+ * @license  https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
+ * @link     https://github.com/nayanchamp7/Nazrul-Islam-Nayan---Frontend-Developer.git
  */
 
 defined('ABSPATH') || exit;
 
-if ( ! class_exists('SPX_API') ) {
-    class SPX_API {
+if (! class_exists('SPX_API') ) {
+    /**
+     * SpaceX API class
+     *
+     * @category Class
+     * @package  SPX_API
+     * @author   Nazrul Islam Nayan <nazrulislamnayan7@gmail.com>
+     * @license  https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
+     * @link     https://github.com/nayanchamp7/Nazrul-Islam-Nayan---Frontend-Developer.git
+     */
+    class SPX_API
+    {
 
-        protected static $_instance = null;
+        protected static $instance = null;
 
-        function __construct() {
+        /**
+         * Constructor
+         */
+        function __construct()
+        {
 
-            $this->init_rest_api();
-            do_action( 'spx_api_loaded', $this );
+            $this->initRestApi();
+            do_action('spx_api_loaded', $this);
         }
 
-        // instance
-        public static function instance() {
-            if ( is_null( self::$_instance ) ) {
-                self::$_instance = new self();
+        /**
+         * Instance
+         *
+         * @return SPX_API|null
+         */
+        public static function instance()
+        {
+            if (is_null(self::$instance) ) {
+                self::$instance = new self();
             }
 
-            return self::$_instance;
+            return self::$instance;
         }
 
-        // init rest api
-        function init_rest_api() {
-            add_action('rest_api_init',  [$this, 'spx_register_api']);
+        /**
+         * Init rest api
+         *
+         * @return void
+         */
+        function initRestApi()
+        {
+            add_action('rest_api_init',  [$this, 'registerApi']);
         }
 
-        // create api endpoints
-        function spx_register_api() {
+        /**
+         * Create api endpoints
+         *
+         * @return void|false
+         */
+        function registerApi()
+        {
 
-            // register endpoint to get icon list
+            // when user is not logged in, don't access endpoint
+            if( ! is_user_logged_in() ) {
+                return false;
+            }
+
+            // register endpoint to get capsules
             register_rest_route(
                 'spx/v1',
                 '/capsules/',
                 array(
                     'methods' => 'GET',
-                    'callback' => [$this, 'spx_get_capsules'],
+                    'callback' => [$this, 'getCapsules'],
+                    'permission_callback' => '__return_true',
+                )
+            );
+
+            // register endpoint to get launches
+            register_rest_route(
+                'spx/v1',
+                '/launches/',
+                array(
+                    'methods' => 'GET',
+                    'callback' => [$this, 'getLaunches'],
                     'permission_callback' => '__return_true',
                 )
             );
         }
 
-        // get spacex capsules via api
-        function spx_get_capsules($request) {
+        /**
+         * Get spacex capsules via api
+         *
+         * @param $request object api request object
+         *
+         * @return WP_REST_Response
+         * @throws Exception
+         */
+        function getCapsules($request)
+        {
 
             // api url
             $api_url = 'https://api.spacexdata.com/v4/capsules/query';
@@ -81,19 +138,17 @@ if ( ! class_exists('SPX_API') ) {
                     "type",
                 ];
 
-                if( isset($filter_by) && $filter_value && in_array($filter_by, $available_filters) ) {
-                    $body_args['query'][$filter_by] = $filter_value;
+                if( isset($filter_by) && $filter_value ) {
+                    if ( in_array($filter_by, $available_filters) ) {
+                        $body_args['query'][$filter_by] = $filter_value;
+                    }
                 }
             }
 
-            //offset for pagination
-            $target_offset = $per_page * $page;
-            $target_offset = !empty($target_offset) && $page > 1 ? $target_offset : 0;
-
             //option arguments for the query
             $option_args = [
-                "offset" => $target_offset,
                 "limit" => $per_page,
+                "page" => $page,
             ];
             $body_args['options'] = $option_args;
 
@@ -103,20 +158,62 @@ if ( ! class_exists('SPX_API') ) {
             );
 
             // get the api response
-            $response = wp_remote_post( $api_url, $args );
+            $response = wp_remote_post($api_url, $args);
 
             // set api body response and messages
-            if ( ! is_wp_error( $response ) ) {
-                $responseBody = json_decode( wp_remote_retrieve_body( $response ), true );
+            if (! is_wp_error($response) ) {
+                $responseBody = json_decode(wp_remote_retrieve_body($response), true);
             } else {
                 $error_message = $response->get_error_message();
-                throw new Exception( $error_message );
+                throw new Exception($error_message);
             }
 
-            return new WP_REST_Response([
+            return new WP_REST_Response(
+                [
                 'data' => $responseBody,
                 'count' => isset($responseBody["docs"]) ? count($responseBody["docs"]) : 0,
-            ]);
+                ]
+            );
+        }
+
+        /**
+         * Get spacex launces via api
+         *
+         * @param $request object api request object
+         *
+         * @return WP_REST_Response
+         * @throws Exception
+         */
+        function getLaunches($request)
+        {
+
+            // per page parameter
+            $id = $request->get_param('id');
+            $launch_id = isset($id) ? $id : "";
+
+            if( empty($launch_id) ) {
+                $responseBody = __("Launch id parameter missing", "spacex-craft");
+            }else {
+                // api url
+                $api_url = 'https://api.spacexdata.com/v4/launches/' . $launch_id;
+
+                // get the api response
+                $response = wp_remote_get($api_url);
+
+                // set api body response and messages
+                if (! is_wp_error($response) ) {
+                    $responseBody = json_decode(wp_remote_retrieve_body($response), true);
+                } else {
+                    $error_message = $response->get_error_message();
+                    throw new Exception($error_message);
+                }
+            }
+
+            return new WP_REST_Response(
+                [
+                    'data' => $responseBody,
+                ]
+            );
         }
 
     }

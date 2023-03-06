@@ -6,7 +6,8 @@
 
 const { registerBlockType } = wp.blocks;
 
-import metadata from '../block.json';
+// block json metadata
+import metadata from '../src/block.json';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -21,7 +22,6 @@ import './style.scss';
  * Internal dependencies
  */
 import Edit from './edit';
-import save from './save';
 
 /**
  * Every block starts by registering a new block type definition.
@@ -33,8 +33,4 @@ registerBlockType(metadata, {
 	 * @see ./edit.js
 	 */
 	edit: Edit,
-	/**
-	 * @see ./save.js
-	 */
-	save,
 });

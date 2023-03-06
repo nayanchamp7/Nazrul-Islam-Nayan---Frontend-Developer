@@ -6,40 +6,18 @@
 const { __ } = wp.i18n;
 
 import React from 'react';
+import ServerSideRender from "@wordpress/server-side-render";
 
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
- */
+// include scss file
+import './style.scss';
+
 const {
     InspectorControls,
     BlockControls,
     useBlockProps,
-    JustifyToolbar,
-    PanelColorSettings
 } = wp.blockEditor;
 
-import {
-    __experimentalLinkControl as LinkControl
-} from '@wordpress/block-editor';
-
 const { Fragment, useState, useEffect, useRef } = wp.element;
-
-import {
-    Panel,
-    PanelBody,
-    Popover,
-    RangeControl,
-    Button,
-    ToolbarButton,
-    ToolbarGroup,
-    ToggleControl,
-    Toolbar,
-    Dashicon,
-    Modal,
-} from '@wordpress/components';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -52,18 +30,23 @@ import {
 export default function Edit(props) {
 
     const { attributes, setAttributes } = props;
-    const { style } = useBlockProps();
 
-    const {
-        search_by,
-    } = attributes;
-
-    const [isSearch, setIsSearch] = useState(false);
+    // render the view
+    function viewMode() {
+        return(
+            <>
+                <ServerSideRender
+                    block="spacex/craft"
+                    attributes={attributes}
+                />
+            </>
+        );
+    }
 
     return (
         <Fragment >
-            <div className='spx-editor-wrapper' {...useBlockProps()} >
-                <h2>Hello SpaceX</h2>
+            <div {...useBlockProps()}>
+                { viewMode() }
             </div>
         </Fragment>
     );

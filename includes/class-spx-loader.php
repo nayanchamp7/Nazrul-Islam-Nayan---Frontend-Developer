@@ -1,9 +1,14 @@
 <?php
 
+
 /**
- * SPX Main Class
+ * SpaceX Main Class
  *
+ * @category Class
  * @package  SPX_Loader
+ * @author   Nazrul Islam Nayan <nazrulislamnayan7@gmail.com>
+ * @license  https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
+ * @link     https://github.com/nayanchamp7/Nazrul-Islam-Nayan---Frontend-Developer.git
  */
 
 defined('ABSPATH') || exit;
@@ -12,7 +17,9 @@ class SPX_Loader
 {
     protected static $_instance = null;
 
-    // constructor
+    /**
+     * Constructor
+     */
     function __construct()
     {
         $this->includes();
@@ -20,13 +27,23 @@ class SPX_Loader
         do_action('spx_loaded', $this);
     }
 
-    // version
+    /**
+     * Get the plugin version
+     *
+     * @return string|null
+     */
     function version()
     {
         return esc_attr(SPX_VERSION);
     }
 
-    // define
+    /**
+     * Define constance
+     *
+     * @param $name
+     * @param $value
+     * @return void
+     */
     protected function define($name, $value)
     {
         if (!defined($name)) {
@@ -34,7 +51,11 @@ class SPX_Loader
         }
     }
 
-    // instance
+    /**
+     * Instance
+     *
+     * @return SPX_Loader|null
+     */
     static function instance()
     {
         if (is_null(self::$_instance)) {
@@ -44,115 +65,116 @@ class SPX_Loader
         return self::$_instance;
     }
 
-    // includes files
+    /**
+     * Include files
+     *
+     * @return void
+     */
     function includes()
     {
-        // api file including
+        // api file
         include dirname(__FILE__) . '/class-spx-api.php';
+
+        // block file
+        include dirname(__FILE__) . '/class-spx-block.php';
 
     }
 
-    // action and filter hooks
+    /**
+     * Hook
+     *
+     * @return void
+     */
     function hooks()
     {
         // init
-        add_action('init', [$this, 'init']);
-
-        // block scripts
-        add_action('enqueue_block_editor_assets', [$this, 'spx_block_scripts']);
+        add_action('init', [$this, 'init'], 20);
     }
 
-    // plugin init
+    /**
+     * Initialize
+     *
+     * @return void
+     */
     function init()
     {
         //api class initialize
         new SPX_API();
+
+        //block class initialize
+        $spx_block_obj = new SPX_Block();
+        $spx_block_obj->get_loader($this);
     }
 
+    /**
+     * Load text domain
+     *
+     * @return void
+     */
     public function language()
     {
         load_plugin_textdomain('spacex-craft', false, plugin_basename(dirname(SPX_PLUGIN_FILE)) . '/languages');
     }
 
+    /**
+     * Get file basename
+     *
+     * @return string
+     */
     public function basename()
     {
         return basename(dirname(SPX_PLUGIN_FILE));
     }
 
+    /**
+     * Get plugin basename
+     *
+     * @return string
+     */
     public function plugin_basename()
     {
         return plugin_basename(SPX_PLUGIN_FILE);
     }
 
+    /**
+     * Get plugin directory name
+     *
+     * @return string
+     */
     public function plugin_dirname()
     {
         return dirname(plugin_basename(SPX_PLUGIN_FILE));
     }
 
+    /**
+     * Get plugin directory path
+     *
+     * @return string
+     */
     public function plugin_path()
     {
         return untrailingslashit(plugin_dir_path(SPX_PLUGIN_FILE));
     }
 
+    /**
+     * Get plugin directory URL
+     *
+     * @return string
+     */
     public function plugin_url()
     {
         return untrailingslashit(plugins_url('/', SPX_PLUGIN_FILE));
     }
 
+    /**
+     * Include folder path
+     *
+     * @param $file string file path
+     * @return string
+     */
     function include_path($file = '')
     {
         return untrailingslashit(plugin_dir_path(SPX_PLUGIN_FILE) . 'includes') . $file;
     }
 
-    // enqueue scripts
-    function spx_block_scripts()
-    {
-
-        // default dependencies
-        $script_dependencies = array(
-            'dependencies' => null,
-            'version' => null,
-        );
-
-        // include dependencies file
-        if ( file_exists($this->plugin_path() . '/build/index.asset.php') ) {
-            $script_dependencies = require $this->plugin_path() . '/build/index.asset.php';
-        }
-
-        // block css
-        wp_enqueue_style(
-            'spx-blocks-style',
-            $this->plugin_url() . '/build/style-index.css',
-            array('wp-edit-blocks'),
-            time()
-        );
-
-        // script file
-        wp_register_script(
-            'spx-block-script',
-            $this->plugin_url() . '/build/index.js',
-            $script_dependencies['dependencies'],
-            $script_dependencies['version'],
-            true // Enqueue in the footer.
-        );
-
-        // localize script
-        wp_localize_script(
-            'spx-block-script',
-            'spx_script_obj',
-            array(
-                'homeurl' => home_url(),
-                'ajaxurl' => admin_url('admin-ajax.php'),
-                'plugin_url' => $this->plugin_url(),
-            )
-        );
-
-        // register block
-        register_block_type(
-            $this->plugin_path(),
-            array(
-                'editor_script' => 'spx-block-script'
-            )
-        );
-    }
 }

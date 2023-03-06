@@ -11,30 +11,31 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       spacex-craft
  *
- * @package           SpaceX
+ * @package SpaceX
  */
 
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
-if ( ! defined( 'SPX_VERSION' ) ) {
-    define( 'SPX_VERSION', '1.0.0' );
+if (! defined('SPX_VERSION') ) {
+    define('SPX_VERSION', '1.0.0');
 }
 
-if ( ! defined( 'SPX_PLUGIN_FILE' ) ) {
-    define( 'SPX_PLUGIN_FILE', __FILE__ );
+if (! defined('SPX_PLUGIN_FILE') ) {
+    define('SPX_PLUGIN_FILE', __FILE__);
 }
 
 // Include the main class.
-if ( ! class_exists( 'SPX_Loader', false ) ) {
-    require_once dirname( __FILE__ ) . '/includes/class-spx-loader.php';
+if (! class_exists('SPX_Loader', false) ) {
+    include_once dirname(__FILE__) . '/includes/class-spx-loader.php';
 }
 
 /**
  * Returns the main instance.
  */
-function spx_loader_callback() { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
+function spx_loader_callback()  // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
+{
     return SPX_Loader::instance();
 }
 
-add_action( 'plugins_loaded', 'spx_loader_callback' );
+add_action('plugins_loaded', 'spx_loader_callback');

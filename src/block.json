@@ -29,6 +29,7 @@
             "default": ""
         }
     },
-    "editorScript": "spx-block-script"
+    "script": "spx-block-script",
+    "viewScript": "spx-block-script"
 }
   
